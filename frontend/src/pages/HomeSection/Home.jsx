@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "../components/Header.jsx";
 
 function Home() {
 
@@ -9,4 +8,4 @@ function Home() {
     )
 }
 
-export default App
+export default Home
