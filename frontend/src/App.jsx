@@ -8,7 +8,7 @@ import SignUp from "./pages/SignUp.jsx"
 function App() {
 
   return (
-      <div className={"container relative mx-auto"}>
+      <div className={""}>
         <Navbar/>
           <Routes>
               <Route path={'/'} element={<Home/>}/>
