@@ -28,15 +28,18 @@ function ForBuyers() {
         },
     ]
     return (
-        <div className={""}>
-            <h1 className={"items-center"}>For Buyers</h1>
-            <div className={"flex flex-col items-end"}>
-                <div className={"flex items-end"}>
-                    <p>Find Unique Products:</p>
-                    <p>Discover secondhand furniture, textbooks, clothing, and more—perfect for a student budge</p>
-                    <p>05</p>
+        <div className={"bg-blue-400/70 rounded-xl flex flex-col items-end p-14"}>
+            <h1 className={"pl-96 text-5xl font-light pb-6"}>For Buyers</h1>
+                <div className={"flex flex-col items-end text-right gap-10 pt-5 border-t"}>
+                    {instructions.map((instruction)=>(
+                        <div key={instruction.key} className={"flex gap-8"}>
+                            <p className={"text-2xl max-w-4xl"}>
+                                <span className={"font-bold"}>{instruction.title}: </span>{instruction.description}
+                            </p>
+                            <p className={"text-5xl font-light underline"}>{instruction.number}</p>
+                        </div>
+                    ))}
                 </div>
-            </div>
         </div>
     )
 }
