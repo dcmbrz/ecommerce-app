@@ -1,6 +1,6 @@
-# MarketU
+# SideHustle
 
-The Student Marketplace is a platform where students can buy and sell products and services to each other. It features personalized dashboards, the ability to set up storefronts, explore listings with advanced filters, and a seamless checkout process powered by Stripe API. Users can also leave reviews for their purchases.
+SideHustle is a platform where students can buy and sell products and services to each other. It features personalized dashboards, the ability to set up storefronts, explore listings with advanced filters, and a seamless checkout process powered by Stripe API. Users can also leave reviews for their purchases.
 
 ## Table of Contents
 
@@ -19,16 +19,16 @@ The Student Marketplace is a platform where students can buy and sell products a
 ## Types of Users
 
 ### Unregistered Users
-Unregistered users can explore MarketU to view products and services but cannot make purchases, leave reviews, or set up storefronts. They are prompted to log in or register for an account to access these features.
+Unregistered users can explore SideHustle to view products and services but cannot make purchases, leave reviews, or set up storefronts. They are prompted to log in or register for an account to access these features.
 
 ### Registered Users
-Registered users have full capabilities on MarketU, including all unregistered user capabilities. In addition, they are able to buy products and services through the platform, set up storefronts and create listings, view and manage sales via their dashboard, leave reviews for their purchases..
+Registered users have full capabilities on SideHustle, including all unregistered user capabilities. In addition, they are able to buy products and services through the platform, set up storefronts and create listings, view and manage sales via their dashboard, leave reviews for their purchases..
 
 ## Pages
 
 ### Home Page: Advanced search and filters.
 
-Through Soundcrate's homepage, viewers can see new music releases on Spotify and popular reviews from other users.
+Through SideHustle's homepage, viewers can see new music releases on Spotify and popular reviews from other users.
 
 ### Explore Page: Search for your favorite songs and albums easily.
 
@@ -48,12 +48,12 @@ Each listing features detailed information about the product or service, includi
 
 ### Profile Page: View and manage your account.
 
-The Profile Page shows user details, purchase history, and re
+The profile page shows user details, purchase history, and re
 
 ### Navigation Bar: Easy access to MarketU's various pages.
 
-On every page on MarketU, users will be able to directly visit other pages through the navigation bar. The navigation bar has 4 main pages:
-- **MarketU:** By clicking on MarketU, users are redirected to the homepage.
+On every page on SideHustle, users will be able to directly visit other pages through the navigation bar. The navigation bar has 4 main pages:
+- **SideHustle:** By clicking on SideHustle, users are redirected to the homepage.
 - **Search:** Through Search, users can visit the explore page.
 - **Profile:**
   -  Unregistered Users: Unregistered users can either Register or Login.
