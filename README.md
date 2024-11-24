@@ -71,5 +71,5 @@ On every page on MarketU, users will be able to directly visit other pages throu
 - **Node.js**: For the backend server
 - **Express.js**: For handling API requests
 - **MongoDB**: For the database
-- **Stripe AP**: For secure payments
+- **Stripe API**: For secure payments
 - **Tailwind CSS**: For responsive styling
