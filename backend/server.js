@@ -12,7 +12,7 @@ connectDB()
 connectCloudinary()
 
 // middlewares
-app.use(express.json())
+app.use(express.json());
 app.use(cors()) // allows us to access the backend from any IP
 
 // api endpoints
