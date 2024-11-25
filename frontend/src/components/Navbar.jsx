@@ -8,7 +8,7 @@ function Navbar() {
 
             <div className={"flex gap-3 items-center"}>
                 <div className={"bg-gray-400 w-10 h-10 rounded-lg"}></div>
-                <h1 className={"font-medium text-lg"}>College Marketplace</h1>
+                <h1 className={"font-medium text-lg"}>SideHustle</h1>
 
             </div>
 
