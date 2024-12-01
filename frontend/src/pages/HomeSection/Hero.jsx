@@ -1,5 +1,6 @@
 import React from "react";
 import collegeStudentImage from '../../assets/college_students.webp';
+import {Link} from "react-router-dom";
 function Hero() {
 
     return (
@@ -16,9 +17,9 @@ function Hero() {
                 <p className="text-white font-light max-w-xl">
                     Buy and sell products/services within your college community!
                 </p>
-                <p className="text-white font-medium bg-blue-500 max-w-fit px-5 py-3 rounded-lg cursor-pointer">
+                <Link to={"/sign-up"} className="text-white font-medium bg-blue-500 max-w-fit px-5 py-3 rounded-lg cursor-pointer">
                     Get Started Today
-                </p>
+                </Link>
             </div>
         </div>
     )
