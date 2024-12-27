@@ -28,7 +28,7 @@ function ForSellers() {
         },
     ]
     return (
-        <div className={"py-28 flex flex-col"}>
+        <div className={"py-20 flex flex-col"}>
             <div className={"flex justify-center"}>
                 <h1 className={"text-5xl font-medium text-center"}>How it Works</h1>
             </div>

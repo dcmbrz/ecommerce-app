@@ -8,7 +8,7 @@ function Navbar() {
 
             <div className={"flex gap-3 items-center"}>
                 <div className={"bg-gray-400 w-10 h-10 rounded-lg"}></div>
-                <h1 className={"font-medium text-lg"}>College Marketplace</h1>
+                <Link to={"/"} className={"font-medium text-lg"}>SideHustle</Link>
 
             </div>
 
@@ -24,9 +24,9 @@ function Navbar() {
             </div>
 
             <div className={"flex gap-14"}>
-                {location.pathname == "/" ? (<Link to={"/"}>Home</Link>): (<Heart/>)}
-                {location.pathname == "/" ? (<Link to={"/about"}>About</Link>): (<CircleUserRound/>)}
-                {location.pathname == "/" ? (<Link to={"/sign-in"}>Sign In</Link>): (<ShoppingCart/>)}
+                <Link to={"/"}>Home</Link>
+                <Link to={"/about"}>About</Link>
+                <Link to={"/sign-in"}>Sign In</Link>
             </div>
 
         </div>

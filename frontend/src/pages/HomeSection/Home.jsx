@@ -4,6 +4,8 @@ import ConnectStudents from "./ConnectStudents.jsx";
 import Features from "./Features.jsx";
 import ForSellers from "./ForSellers.jsx";
 import ForBuyers from "./ForBuyers.jsx";
+import Slideshow from "./Slideshow.jsx";
+import Footer from "./Footer.jsx";
 
 function Home() {
     return (
@@ -13,6 +15,8 @@ function Home() {
             <Features/>
             <ForSellers/>
             <ForBuyers/>
+            <Slideshow/>
+            <Footer/>
         </div>
     )
 }

@@ -28,7 +28,7 @@ function ForBuyers() {
         },
     ]
     return (
-        <div className={"bg-blue-400/70 rounded-xl flex flex-col items-end p-14"}>
+        <div className={"my-20 bg-blue-400/70 rounded-xl flex flex-col items-end p-14"}>
             <h1 className={"pl-96 text-5xl font-light pb-6"}>For Buyers</h1>
                 <div className={"flex flex-col items-end text-right gap-10 pt-5 border-t"}>
                     {instructions.map((instruction)=>(
