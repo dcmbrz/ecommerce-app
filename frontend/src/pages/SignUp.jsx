@@ -1,110 +1,94 @@
-import React, { useRef } from "react";
-import Slider from "react-slick";
+import React from "react";
 import {Link} from "react-router-dom";
-import TextField from '@mui/material/TextField';
-import {Checkbox, FormControlLabel} from "@mui/material";
-import uci from "../assets/uci-students.jpg"
-import usc from "../assets/usc-students.jpg"
-import lmu from "../assets/lmu-students.jpeg"
+import { ShieldCheck, HeartHandshake } from "lucide-react";
+import image3 from "../assets/lmu-students.jpeg";
 
 function SignUp() {
-    let sliderRef = useRef(null);
-    const play = () => {
-        sliderRef.slickPlay();
-    };
-    const pause = () => {
-        sliderRef.slickPause();
-    };
-
-    const settings = {
-        dots: true,
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,
-        autoplaySpeed: 3000,
-        arrows: false
-    };
     return (
-        <div className="flex text-gray-300 font-light container max-w-5xl mx-auto space-x-5 my-12 p-5 pb-8 bg-gray-700 rounded-lg">
-            <div className="w-1/2">
-                <Slider ref={slider => (sliderRef = slider)} {...settings}>
-                    <div>
-                        <img src={uci} alt={"uci-students"} className={"rounded-md"}/>
+        <div className="flex items-center justify-center h-screen ">
+            <div className="flex text-gray-300 font-normal justify-center container max-w-6xl mx-auto">
+                <div className="w-1/2 flex flex-col max-w-sm mx-auto gap-1 justify-center">
+                    <div className={"flex flex-col items-center gap-2"}>
+                        <h1 className={"flex text-3xl text-black font-medium"}>Create an account</h1>
+                        <p className={"text-gray-500 text-md"}>Let's get started with your free account</p>
                     </div>
-                    <div>
-                        <img src={usc} alt={"usc students"} className={"rounded-md"}/>
-                    </div>
-                    <div>
-                        <img src={lmu} alt={"lmu students"} className={"rounded-md"}/>
-                    </div>
-                </Slider>
-            </div>
 
-            <div className="w-1/2 flex flex-col items-center justify-center w-full min-h-screen">
-                <h1>Create an account</h1>
-                <span className={"flex gap-1"}>
-                    <p>Already have an account?</p>
-                    <Link to={"/sign-in"}></Link>
-                </span>
-                <div className={"flex flex-col gap-3 justify-between"}>
-                    <div className={"flex gap-3"}>
-                        <TextField
-                            required
-                            id="outlined-required"
-                            label="Firstname"
-                        />
-                        <TextField
-                            required
-                            id="outlined-required"
-                            label="Lastname"
-                        />
-                    </div>
-                    <TextField
-                        required
-                        id="outlined-required"
-                        label="Email (.edu only)"
-                        className={"w-full"}
-                    />
-                    <TextField
-                        required
-                        id="outlined-password-input"
-                        label="Password"
-                        type="password"
-                        autoComplete="current-password"
-                        className={"w-full"}
-                    />
-                    <TextField
-                        required
-                        id="outlined-password-input"
-                        label="Confirm password"
-                        type="password"
-                        autoComplete="current-password"
-                        className={"w-full"}
-                    />
-                    <FormControlLabel
-                        required
-                        control={<Checkbox />}
-                        label={
-                            <>
-                                I agree to the{' '}
-                                <Link to="terms-and-conditions" className={"underline"}>Terms & Conditions</Link>
-                            </>
-                        }
-                    />
-                </div>
-                <div>
-                    <Link to={"/explore"}>Create Account</Link>
-                    <span className={"flex"}>
-                        <hr/>
-                        <p>Or register with</p>
-                        <hr/>
+                    <span className={"inline-flex border-2 rounded-full items-center justify-center border-gray-300 gap-2 p-2 w-full my-5"}>
+                        <img className={"w-[16px]"}
+                             src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg"/>
+                        <button className={"text-sm text-black font-medium"}>Login with Google</button>
                     </span>
-                    <button className={"border border-gray-300 hover:border-white"}>Google</button>
-                    <button className={"border border-gray-300 hover:border-white"}>Apple</button>
+
+                    <div className={"flex flex-col items-center w-full"}>
+                        <span className={"flex text-gray-500 font-medium py-3"}>
+                            <hr/>
+                            <p>Or</p>
+                            <hr/>
+                        </span>
+                    </div>
+                    <form className={"flex flex-col gap-3 justify-between w-full"}>
+                        <span className={"space-y-1"}>
+                            <h1 className={"text-black flex gap-1"}>First name<p
+                                className={"text-red-500 font-bold"}>*</p></h1>
+                            <input placeholder={"Enter your first name"}
+                                   className={"pl-3 border-2 rounded-full items-center justify-center border-gray-300 gap-2 p-2 w-full text-gray-600"}/>
+                        </span>
+                        <span className={"space-y-1"}>
+                            <h1 className={"text-black flex gap-1"}>Last name<p
+                                className={"text-red-500 font-bold"}>*</p></h1>
+                            <input placeholder={"Enter your last name"}
+                                   className={"pl-3 border-2 rounded-full items-center justify-center border-gray-300 gap-2 p-2 w-full text-gray-600"}/>
+                        </span>
+                        <span className={"space-y-1"}>
+                            <h1 className={"text-black inline-flex gap-1"}>Email<p
+                                className={"text-sm text-gray-500"}>(.edu only)</p><p
+                                className={"text-red-500 font-bold"}>*</p></h1>
+                            <input placeholder={"Enter your email"}
+                                   className={"pl-3 border-2 rounded-full items-center justify-center border-gray-300 gap-2 p-2 w-full text-gray-600"}/>
+                        </span>
+                        <span className={"space-y-1"}>
+                            <h1 className={"text-black flex gap-1"}>Password<p
+                                className={"text-red-500 font-bold"}>*</p></h1>
+                            <input placeholder={"Enter your password"}
+                                   className={"pl-3 border-2 rounded-full items-center justify-center border-gray-300 gap-2 p-2 w-full text-gray-600"}/>
+                        </span>
+                    </form>
+
+                    <Link to={"/explore"} className={"bg-black text-white p-2 rounded-full w-full my-5 text-center"}>Sign Up</Link>
+                    <span className={"flex gap-1 text-sm"}>
+                <p className={"text-black font-medium"}>Already have an account?</p>
+                <Link to={"/sign-in"} className={"text-blue-500 font-medium"}>Log in</Link>
+            </span>
+
                 </div>
+                <div className="w-1/2">
+                    <div className={"relative rounded-xl w-full h-full object-cover"}>
+                        <img src={image3}
+                             alt="Students walking and laughing"
+                             className="rounded-lg w-full h-full object-cover"
+                        />
+                        <div className="absolute bg-black/20 text-white inset-0 rounded-lg flex flex-col p-10 justify-end gap-3 items-center">
+                            <h1 className={"text-center text-3xl max-w-md mx-auto font-medium"}>Discovering the Best
+                                Services and Products for You</h1>
+                            <p className={"max-w-md mx-auto text-center"}>Our practice is providing a platform for
+                                students to gain access to affordable products/services</p>
+                            <div className={"flex justify-evenly w-full max-w-md mx-auto py-5"}>
+                                <span className={"inline-flex p-1 border-2 rounded-full px-3 gap-1 items-center"}>
+                                    <ShieldCheck size={20}/>
+                                    <p>Trusted Community</p>
+                                </span>
+                                <span className={"inline-flex p-1 border-2 rounded-full px-3 gap-1 items-center"}>
+                                    <HeartHandshake size={20}/>
+                                    <p>Support Other Students</p>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
+
     )
 }
 
