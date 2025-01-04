@@ -1,3 +1,4 @@
+// ***USER LOGIN & Registration Feature***
 // logic for user to create an account and/or sign in
 // created three router functions
 import userModel from "../models/userModel.js";

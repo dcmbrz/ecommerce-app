@@ -1,6 +1,6 @@
 import React from 'react'
 import { Search, AlignJustify} from "lucide-react";
-import {Link, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
 function Navbar() {
     return (
         <div className={"flex justify-between items-center px-5 py-3 border-b"}>
