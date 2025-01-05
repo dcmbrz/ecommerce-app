@@ -7,7 +7,6 @@ const userSchema = new mongoose.Schema(
         lastname: { type: String, required: true },
         email: { type: String, required: true, unique: true, match: /.+\@.+\..+/ },
         password: { type: String, required: true },
-        phoneNumber: { type: String, required: true, unique: true, match: /^\+?[1-9]\d{1,14}$/ },
         campus: { type: String, required: true, default: "" },
         profilePicture: { type: String, default: "" },
         followers: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }], default: [] },

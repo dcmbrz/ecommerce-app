@@ -5,6 +5,8 @@ import Home from "./pages/HomeSection/Home.jsx"
 import SignIn from "./pages/SignIn.jsx"
 import SignUp from "./pages/SignUp.jsx"
 import Explore from "./pages/Explore.jsx"
+import Cart from "./pages/Cart.jsx";
+import Favorites from "./pages/Favorites.jsx";
 
 function App() {
 
@@ -16,6 +18,8 @@ function App() {
               <Route path={'/sign-up'} element={<SignUp/>}/>
               <Route path={'/sign-in'} element={<SignIn/>}/>
               <Route path={'/explore'} element={<Explore/>}/>
+              <Route path={'/cart'} element={<Cart/>}/>
+              <Route path={'/favorites'} element={<Favorites/>}/>
           </Routes>
       </div>
   )

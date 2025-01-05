@@ -1,5 +1,5 @@
 import React from 'react'
-import { Search, AlignJustify} from "lucide-react";
+import { Search, AlignJustify, Heart, ShoppingCart} from "lucide-react";
 import {Link} from "react-router-dom";
 function Navbar() {
     return (
@@ -22,10 +22,11 @@ function Navbar() {
                 </span>
             </div>
 
-            <div className={"flex gap-14"}>
-                <Link to={"/"}>Home</Link>
-                <Link to={"/about"}>About</Link>
-                <Link to={"/sign-up"}>Sign Up</Link>
+            <div className={"flex gap-5 font-medium text-lg items-center justify-center"}>
+                <Link to={"/favorites"}><Heart/></Link>
+                <Link to={"/cart"}><ShoppingCart/></Link>
+                <Link to={"/sign-up"} className={"border-2 p-1 px-5 rounded-lg border-blue-500"}>Sign up</Link>
+                <Link to={"/sign-in"}>Sign in</Link>
             </div>
 
         </div>

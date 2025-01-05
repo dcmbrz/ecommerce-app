@@ -8,12 +8,12 @@ function SignIn() {
 
     return (
         <div className="flex items-center justify-center h-screen ">
-            <div className="flex text-gray-300 font-normal justify-center container max-w-6xl mx-auto">
+            <div className="flex text-gray-300 font-normal justify-center w-screen">
                 <div className="w-1/2">
-                    <div className={"relative rounded-xl w-full h-full object-cover"}>
+                    <div className={"relative w-full h-screen object-cover"}>
                         <img src={image2}
                              alt="Students walking and laughing"
-                             className="rounded-lg w-full h-full object-cover"
+                             className="w-full h-full object-cover"
                         />
                         <div
                             className="absolute bg-black/15 text-white inset-0 rounded-lg flex flex-col p-10 justify-end gap-3 items-center">
@@ -57,19 +57,19 @@ function SignIn() {
                             <h1 className={"text-black inline-flex gap-1"}>Email<p
                                 className={"text-red-500 font-bold"}>*</p></h1>
                             <input placeholder={"Enter your email"} type="email"
-                                   className={"pl-3 border-2 rounded-full items-center justify-center border-gray-300 gap-2 p-2 w-full text-gray-600"}/>
+                                   className={"pl-3 border-2 rounded-lg items-center justify-center border-gray-300 gap-2 p-3 w-full text-gray-600"}/>
                         </span>
 
                         <span className={"space-y-1"}>
                             <h1 className={"text-black flex gap-1"}>Password<p
                                 className={"text-red-500 font-bold"}>*</p></h1>
                             <input placeholder={"Enter your password"} type="password"
-                                   className={"pl-3 border-2 rounded-full items-center justify-center border-gray-300 gap-2 p-2 w-full text-gray-600"}/>
+                                   className={"pl-3 border-2 rounded-lg items-center justify-center border-gray-300 gap-2 p-3 w-full text-gray-600"}/>
                         </span>
                     </form>
 
 
-                    <Link to={"/explore"} className={"bg-black text-white p-2 rounded-full w-full my-5 text-center"}>Sign
+                    <Link to={"/explore"} className={"bg-black text-white p-2 rounded-md w-full my-5 text-center"}>Sign
                         In</Link>
                     <span className={"flex gap-1 text-sm"}>
                         <p className={"text-black font-medium"}>Don't have an account?</p>

@@ -1,12 +1,30 @@
-import React from "react";
+import React, {useState} from "react";
 import {Link} from "react-router-dom";
-import { ShieldCheck, HeartHandshake } from "lucide-react";
+import { ShieldCheck, HeartHandshake, X, Check } from "lucide-react";
 import image3 from "../assets/lmu-students.jpeg";
 
 function SignUp() {
+    const [hasLength, setHasLength] = useState(false);
+    const [hasNumber, setHasNumber] = useState(false);
+    const [hasSymbol, setHasSymbol] = useState(false);
+    const [textVisible, setTextVisible] = useState(false);
+    const handlePasswordChange = (e) => {
+        if (e.target.value.length >= 8) {
+            setHasLength(true);
+        }else{
+            setHasLength(false);
+        }
+
+        setHasNumber(/\d/.test(e.target.value));
+        setHasSymbol(/[!@#$%^&*(),.?":{}|<>]/.test((e.target.value)));
+    }
+
+    const handlePasswordClick = () => {
+        setTextVisible(true);
+    };
     return (
         <div className="flex items-center justify-center h-screen ">
-            <div className="flex text-gray-300 font-normal justify-center container max-w-6xl mx-auto">
+            <div className="flex text-gray-300 font-normal justify-center w-screen">
                 <div className="w-1/2 flex flex-col max-w-sm mx-auto gap-1 justify-center">
                     <div className={"flex flex-col items-center gap-2"}>
                         <h1 className={"flex text-3xl text-black font-medium"}>Create an account</h1>
@@ -31,43 +49,98 @@ function SignUp() {
                             <h1 className={"text-black flex gap-1"}>First name<p
                                 className={"text-red-500 font-bold"}>*</p></h1>
                             <input placeholder={"Enter your first name"}
-                                   className={"pl-3 border-2 rounded-full items-center justify-center border-gray-300 gap-2 p-2 w-full text-gray-600"}/>
+                                   type="text"
+                                   className={"pl-3 border-2 rounded-lg items-center justify-center border-gray-300 gap-2 p-3 w-full text-gray-600"}/>
                         </span>
                         <span className={"space-y-1"}>
                             <h1 className={"text-black flex gap-1"}>Last name<p
                                 className={"text-red-500 font-bold"}>*</p></h1>
                             <input placeholder={"Enter your last name"}
-                                   className={"pl-3 border-2 rounded-full items-center justify-center border-gray-300 gap-2 p-2 w-full text-gray-600"}/>
+                                   type="text"
+                                   className={"pl-3 border-2 rounded-lg items-center justify-center border-gray-300 gap-2 p-3 w-full text-gray-600"}/>
                         </span>
                         <span className={"space-y-1"}>
-                            <h1 className={"text-black inline-flex gap-1"}>Email<p
+                            <h1 className={"text-black flex items-center gap-1"}>Email<p
                                 className={"text-sm text-gray-500"}>(.edu only)</p><p
                                 className={"text-red-500 font-bold"}>*</p></h1>
                             <input placeholder={"Enter your email"}
-                                   className={"pl-3 border-2 rounded-full items-center justify-center border-gray-300 gap-2 p-2 w-full text-gray-600"}/>
+                                   type="email"
+                                   className={"pl-3 border-2 rounded-lg items-center justify-center border-gray-300 gap-2 p-3 w-full text-gray-600"}/>
                         </span>
                         <span className={"space-y-1"}>
                             <h1 className={"text-black flex gap-1"}>Password<p
                                 className={"text-red-500 font-bold"}>*</p></h1>
-                            <input placeholder={"Enter your password"}
-                                   className={"pl-3 border-2 rounded-full items-center justify-center border-gray-300 gap-2 p-2 w-full text-gray-600"}/>
+                            <input
+                                type="password"
+                                placeholder={"Enter your password"}
+                                className={"pl-3 border-2 rounded-lg items-center justify-center border-gray-300 gap-2 p-3 w-full text-gray-600"}
+                                onClick={handlePasswordClick}
+                                onChange={handlePasswordChange}
+                            />
+                                <div className={"flex flex-col items-start w-full gap-2 text-sm"}>
+                                    {textVisible &&
+                                        (hasLength ? (
+                                                <span className={"text-green-600 flex items-center justify-center gap-2"}>
+                                                    <Check size={18}/>
+                                                    <p>Must be at least 8 characters</p>
+                                                </span>
+                                            ) : (
+                                                <span className={"text-red-500 flex items-center justify-center gap-1"}>
+                                                    <X size={18}/>
+                                                    <p>Must be at least 8 characters</p>
+                                                </span>
+                                            )
+                                        )
+                                    }
+                                    {textVisible &&
+                                        (hasNumber ? (
+                                                <span className={"text-green-600 flex items-center justify-center gap-1"}>
+                                                    <Check size={18}/>
+                                                    <p>Must include at least one number</p>
+                                                </span>
+                                            ) : (
+                                                <span className={"text-red-500 flex items-center justify-center gap-1"}>
+                                                    <X size={18}/>
+                                                    <p>Must include at least one number</p>
+                                                </span>
+                                            )
+                                        )
+                                    }
+                                    {textVisible &&
+                                        (hasSymbol ? (
+                                                <span className={"text-green-600 flex items-center justify-center gap-1"}>
+                                                    <Check size={18}/>
+                                                    <p>Must include at least one symbol</p>
+                                                </span>
+                                            ) : (
+                                                <span className={"text-red-500 flex items-center justify-center gap-1"}>
+                                                    <X size={18}/>
+                                                    <p>Must include at least one symbol</p>
+                                                </span>
+                                            )
+                                        )
+                                    }
+                                </div>
+
                         </span>
+
                     </form>
 
-                    <Link to={"/explore"} className={"bg-black text-white p-2 rounded-full w-full my-5 text-center"}>Sign Up</Link>
+                    <Link to={"/explore"} className={"bg-black text-white p-2 rounded-md w-full my-5 text-center"}>Sign
+                        Up</Link>
                     <span className={"flex gap-1 text-sm"}>
-                <p className={"text-black font-medium"}>Already have an account?</p>
-                <Link to={"/sign-in"} className={"text-blue-500 font-medium"}>Log in</Link>
+                        <p className={"text-black font-medium"}>Already have an account?</p>
+                    <Link to={"/sign-in"} className={"text-blue-500 font-medium"}>Log in</Link>
             </span>
 
                 </div>
                 <div className="w-1/2">
-                    <div className={"relative rounded-xl w-full h-full object-cover"}>
+                    <div className={"relative w-full h-screen object-cover"}>
                         <img src={image3}
                              alt="Students walking and laughing"
-                             className="rounded-lg w-full h-full object-cover"
+                             className="w-full h-full object-cover"
                         />
-                        <div className="absolute bg-black/20 text-white inset-0 rounded-lg flex flex-col p-10 justify-end gap-3 items-center">
+                        <div className="absolute bg-black/20 text-white inset-0  flex flex-col p-10 justify-end gap-3 items-center">
                             <h1 className={"text-center text-3xl max-w-md mx-auto font-medium"}>Discovering the Best
                                 Services and Products for You</h1>
                             <p className={"max-w-md mx-auto text-center"}>Our practice is providing a platform for
