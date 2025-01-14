@@ -2,13 +2,18 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
     {
-        isVerified: { type: Boolean, default: false },
         firstname: { type: String, required: true },
         lastname: { type: String, required: true },
-        email: { type: String, required: true, unique: true, match: /.+\@.+\..+/ },
+        email: { type: String, required: true, unique: true},
+        phone: { type: String, required: true , unique: true},
         password: { type: String, required: true },
-        campus: { type: String, required: true, default: "" },
-        profilePicture: { type: String, default: "" },
+        verifyOtp: { type: String, default: '' },
+        verifyOtpExpireAt: { type: Number, default: 0 },
+        isVerified: { type: Boolean, default: false },
+        resetOtp: { type: String, default: '' },
+        resetOtpExpireAt: { type: Number, default: 0 },
+        campus: { type: String, required: false, default: "" },
+        profilePicture: { type: String, default: "https://th.bing.com/th/id/OIP.w94l64eOLz741Eok32ySUgHaHa?w=1184&h=1184&rs=1&pid=ImgDetMain" },
         followers: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }], default: [] },
         following: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }], default: [] },
         favorites: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }], default: [] },

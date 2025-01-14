@@ -1,6 +1,7 @@
 import React from 'react'
 import { Search, AlignJustify, Heart, ShoppingCart} from "lucide-react";
 import {Link} from "react-router-dom";
+import ProfileDropdown from "./ProfileDropdown.jsx";
 function Navbar() {
     return (
         <div className={"flex justify-between items-center px-5 py-3 border-b"}>
@@ -25,9 +26,12 @@ function Navbar() {
             <div className={"flex gap-5 font-medium text-lg items-center justify-center"}>
                 <Link to={"/favorites"}><Heart/></Link>
                 <Link to={"/cart"}><ShoppingCart/></Link>
-                <Link to={"/sign-up"} className={"border-2 p-1 px-5 rounded-lg border-blue-500"}>Sign up</Link>
-                <Link to={"/sign-in"}>Sign in</Link>
+                <ProfileDropdown/>
+                {/*<Link to={"/sign-up"} className={"border-2 p-1 px-5 rounded-lg border-blue-500"}>Sign up</Link>*/}
+                {/*<Link to={"/sign-in"}>Sign in</Link>*/}
             </div>
+
+
 
         </div>
     )

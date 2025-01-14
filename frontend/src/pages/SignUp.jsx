@@ -45,34 +45,44 @@ function SignUp() {
                         </span>
                     </div>
                     <form className={"flex flex-col gap-3 justify-between w-full"}>
-                        <span className={"space-y-1"}>
-                            <h1 className={"text-black flex gap-1"}>First name<p
-                                className={"text-red-500 font-bold"}>*</p></h1>
-                            <input placeholder={"Enter your first name"}
-                                   type="text"
-                                   className={"pl-3 border-2 rounded-lg items-center justify-center border-gray-300 gap-2 p-3 w-full text-gray-600"}/>
-                        </span>
-                        <span className={"space-y-1"}>
-                            <h1 className={"text-black flex gap-1"}>Last name<p
-                                className={"text-red-500 font-bold"}>*</p></h1>
-                            <input placeholder={"Enter your last name"}
-                                   type="text"
-                                   className={"pl-3 border-2 rounded-lg items-center justify-center border-gray-300 gap-2 p-3 w-full text-gray-600"}/>
-                        </span>
+                        <div className={"flex gap-3"}>
+                            <span className={"space-y-1"}>
+                                <h1 className={"text-black flex gap-1"}>First name<p
+                                    className={"text-red-500 font-bold"}>*</p></h1>
+                                <input placeholder={"First name"}
+                                       type="text"
+                                       className={"pl-3 border-2 rounded-lg items-center justify-center border-gray-300 gap-2 p-3 w-full text-gray-600"}
+                                />
+                            </span>
+                            <span className={"space-y-1"}>
+                                <h1 className={"text-black flex gap-1"}>Last name<p
+                                    className={"text-red-500 font-bold"}>*</p></h1>
+                                <input placeholder={"Last name"}
+                                       type="text"
+                                       className={"pl-3 border-2 rounded-lg items-center justify-center border-gray-300 gap-2 p-3 w-full text-gray-600"}/>
+                            </span>
+                        </div>
                         <span className={"space-y-1"}>
                             <h1 className={"text-black flex items-center gap-1"}>Email<p
                                 className={"text-sm text-gray-500"}>(.edu only)</p><p
                                 className={"text-red-500 font-bold"}>*</p></h1>
-                            <input placeholder={"Enter your email"}
+                            <input placeholder={"Email"}
                                    type="email"
                                    className={"pl-3 border-2 rounded-lg items-center justify-center border-gray-300 gap-2 p-3 w-full text-gray-600"}/>
                         </span>
+                        <span className={"space-y-1"}>
+                                <h1 className={"text-black flex gap-1"}>Phone number<p
+                                    className={"text-red-500 font-bold"}>*</p></h1>
+                                <input placeholder={"Phone number"}
+                                       type="text"
+                                       className={"pl-3 border-2 rounded-lg items-center justify-center border-gray-300 gap-2 p-3 w-full text-gray-600"}/>
+                            </span>
                         <span className={"space-y-1"}>
                             <h1 className={"text-black flex gap-1"}>Password<p
                                 className={"text-red-500 font-bold"}>*</p></h1>
                             <input
                                 type="password"
-                                placeholder={"Enter your password"}
+                                placeholder={"Password"}
                                 className={"pl-3 border-2 rounded-lg items-center justify-center border-gray-300 gap-2 p-3 w-full text-gray-600"}
                                 onClick={handlePasswordClick}
                                 onChange={handlePasswordChange}
@@ -80,7 +90,8 @@ function SignUp() {
                                 <div className={"flex flex-col items-start w-full gap-2 text-sm"}>
                                     {textVisible &&
                                         (hasLength ? (
-                                                <span className={"text-green-600 flex items-center justify-center gap-2"}>
+                                                <span
+                                                    className={"text-green-600 flex items-center justify-center gap-2"}>
                                                     <Check size={18}/>
                                                     <p>Must be at least 8 characters</p>
                                                 </span>
@@ -94,7 +105,8 @@ function SignUp() {
                                     }
                                     {textVisible &&
                                         (hasNumber ? (
-                                                <span className={"text-green-600 flex items-center justify-center gap-1"}>
+                                                <span
+                                                    className={"text-green-600 flex items-center justify-center gap-1"}>
                                                     <Check size={18}/>
                                                     <p>Must include at least one number</p>
                                                 </span>
@@ -108,7 +120,8 @@ function SignUp() {
                                     }
                                     {textVisible &&
                                         (hasSymbol ? (
-                                                <span className={"text-green-600 flex items-center justify-center gap-1"}>
+                                                <span
+                                                    className={"text-green-600 flex items-center justify-center gap-1"}>
                                                     <Check size={18}/>
                                                     <p>Must include at least one symbol</p>
                                                 </span>
@@ -135,7 +148,7 @@ function SignUp() {
 
                 </div>
                 <div className="w-1/2">
-                    <div className={"relative w-full h-screen object-cover"}>
+                <div className={"relative w-full h-screen object-cover"}>
                         <img src={image3}
                              alt="Students walking and laughing"
                              className="w-full h-full object-cover"
