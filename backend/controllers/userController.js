@@ -5,8 +5,9 @@ import userModel from "../models/userModel.js";
 
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import nodemailer from "nodemailer";
+
 import crypto from 'crypto';
+import nodemailer from "nodemailer";
 
 // const createToken = (id) => {
 //     return jwt.sign({id}, process.env.JWT_SECRET)
@@ -15,6 +16,14 @@ import crypto from 'crypto';
 // Route for user login
 // checking if the user is genuine and if they are we generate a token
 // we can get the user id and password
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.SENDER_EMAIL,
+        pass: process.env.SENDER_PASS,
+    },
+});
+
 const loginUser = async (req,res) =>{
 
     const {email, password} = req.body;
@@ -123,28 +132,20 @@ const adminLogin = async (req,res) => {
 
 }
 
+//generates email and otp and sends it to user's email
 const sendVerifyOtp = async (req,res) =>{
-    const nodemailer = require('nodemailer');
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: process.env.SENDER_EMAIL,
-            pass: process.env.SENDER_PASS,
-        },
-    });
 
     try{
         const {userId} = req.body;
 
-        const user = await userModel.findById({userId})
+        const user = await userModel.findById(userId)
 
         if (user.isVerified){
             return res.json({success:false, message: "Account Already Verified"})
         }
 
-        const otp = crypto.randomInt(100000, 999999).toString();
-        user.verifyOtp = otp
-        user.verifyOtpExpireAt = Date.now() + 24 * 60 * 60 * 1000
+        user.verifyOtp = crypto.randomInt(100000, 999999).toString()
+        user.verifyOtpExpireAt = Date.now() + 10 * 60 * 1000
         await user.save();
 
         const htmlContent = `
@@ -161,10 +162,11 @@ const sendVerifyOtp = async (req,res) =>{
           </div>
           <div class="content">
             <h2>Welcome to SideHustle!</h2>
-            <p>Hello ${name},</p>
+            <p>Hello ${user.firstname},</p>
             <p>Thank you for registering with us. To complete your registration, please verify your email by using the verification code below:</p>
-            <p><strong>${code}</strong></p>
+            <p><strong>${user.verifyOtp}</strong></p>
             <p>This verification code will expire in 10 minutes. If it expires, you can request a new one by clicking the “Send New Code” link on the verification page.</p>
+          
           </div>
           <div class="footer">
             <p>If you did not request this, please ignore this email.</p>
@@ -191,6 +193,7 @@ const sendVerifyOtp = async (req,res) =>{
     }
 }
 
+//verifies the email using the otp
 const verifyEmail = async (req, res) => {
     const {userId, otp} = req.body;
 
@@ -224,4 +227,147 @@ const verifyEmail = async (req, res) => {
     }
 }
 
-export { loginUser, registerUser, adminLogin, logoutUser, sendVerifyOtp }
+//checks if user is already authenticated
+const isAuthenticated = async (req, res) => {
+    try{
+        return res.json({success:true})
+
+    }catch (error){
+        res.json({success:false, message:error.message})
+    }
+}
+
+//send password reset otp
+const sendResetOtp = async (req, res) => {
+    const {email} = req.body;
+
+    if (!email){
+        return res.json({success:false, message:"Email is required"})
+    }
+    try{
+        const user = await userModel.findOne({email});
+
+        if (!user){
+            return res.json({success:false, message:"User not found"})
+        }
+
+        user.resetOtp = crypto.randomInt(100000, 999999).toString()
+        user.resetOtpExpireAt = Date.now() + 10 * 60 * 1000
+        await user.save();
+
+        const htmlContent = `
+    <html>
+      <head>
+        <style>
+          /* You can include your styles here */
+        </style>
+      </head>
+      <body>
+        <div class="email-container">
+          <div class="header">
+        
+          </div>
+          <div class="content">
+            <h2>Need a new password?</h2>
+            <p>Hello ${user.firstname},</p>
+            <p>We've received your request to reset your password. Use this verification code to proceed with resetting your password:</p>
+            <p><strong>${user.resetOtp}</strong></p>
+            <p>This verification code will expire in 10 minutes. If it expires, you can request a new one by clicking the “Send New Code” link on the verification page.</p>
+          
+          </div>
+          <div class="footer">
+            <p>If you did not request this, please ignore this email.</p>
+            <p>Best regards,</p>
+            <p>The SideHustle Team</p>
+          </div>
+        </div>
+      </body>
+    </html>
+  `;
+        const mailOptions = {
+            from: process.env.SENDER_EMAIL,
+            to: user.email,
+            subject: 'Welcome to SideHustle!',
+            html: htmlContent,
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        return res.json({success:true, message: "OTP sent to your email"})
+
+    } catch (error){
+        res.json({success:false, message:error.message})
+    }
+}
+
+//reset user password
+const resetPassword = async (req, res) => {
+    const {email, otp, newPassword} = req.body;
+
+    if (!email || !newPassword || !otp){
+        return res.json({success:false, message:"Email, OTP, amd new password is required"})
+    }
+
+    try{
+
+        const user = await userModel.findOne({email});
+
+        if (!user){
+            res.json({success:false, message:"User not found"})
+        }
+
+        if (user.resetOtp === "" || user.resetOtp !== otp){
+            return res.json({success:false, message:"Invalid OTP"})
+        }
+
+        if (user.resetOtpExpireAt < Date.now()) {
+            return res.json({success:false, message:"OTP Expired"})
+        }
+
+        user.password = await bcrypt.hash(newPassword, 10);
+        user.resetOtp = "";
+        user.resetOtpExpireAt = 0;
+
+        await user.save()
+
+        res.json({success:true, message: "Password has been reset successfully"})
+
+    }catch(error){
+        res.json({success:false, message:error.message})
+    }
+}
+
+const getUserData = async (req, res) => {
+    try{
+        const {userId} = req.body;
+        const user = await userModel.findById(userId);
+
+        if (!user){
+            return res.json({success:false, message:"User not found"})
+        }
+
+        res.json({
+            success:true,
+            userData: {
+                name: user.name,
+                isVerified: user.isVerified,
+            }
+        })
+
+    }catch (error){
+        res.json({success:false, message:error.message})
+    }
+}
+
+export {
+    loginUser,
+    registerUser,
+    adminLogin,
+    logoutUser,
+    sendVerifyOtp,
+    verifyEmail,
+    isAuthenticated,
+    sendResetOtp,
+    resetPassword,
+    getUserData,
+}
