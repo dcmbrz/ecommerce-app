@@ -8,9 +8,9 @@ import userRouter from "./routes/userRoute.js"
 import productRouter from "./routes/productRoute.js";
 
 // App Config
-const app = express()
+const app = express();
 const port = process.env.PORT || 4000 // this is the port number that the backend starts on
-//connectDB()
+connectDB();
 // connectCloudinary()
 
 // middlewares
