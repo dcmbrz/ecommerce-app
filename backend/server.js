@@ -7,9 +7,9 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routes/userRoute.js"
 
 // App Config
-const app = express()
+const app = express();
 const port = process.env.PORT || 4000 // this is the port number that the backend starts on
-//connectDB()
+connectDB();
 // connectCloudinary()
 
 // middlewares
