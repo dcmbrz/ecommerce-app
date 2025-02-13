@@ -4,19 +4,19 @@ import {ObjectId} from "mongodb";
 const productSchema = new mongoose.Schema({
 
     // must provide all "required fields" or info will not be saved in the data
-    storefrontId : { type: mongoose.Schema.Types.ObjectId, ref: 'storefront', required: true },
-    sellerId : { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
     name: { type: String, required: true },
+    sellerId : { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
+    storefrontId : { type: mongoose.Schema.Types.ObjectId, ref: 'storefront', required: true },
+    quantity: { type: Number, required: true, min: 1 },
+    sizes: { type: [String], default: [] },
     description: { type: String, required: true },
     price: { type: Number, required: true },
-    duration: { type: Number, required: true, min: 1 },
-    isAvailable: { type: Boolean, default: true },
-    images: { type: [String], required: true },
-    quantity: { type: Number, required: true, min: 1 },
     category: { type: String, required: true },
     subCategory: { type: String, required: true },
-    sizes: { type: [String], default: [] },
+    duration: { type: Number, required: true, min: 1 },
+    isAvailable: { type: Boolean, default: true },
     bestseller: { type: Boolean, default: false },
+    images: { type: [String], required: true },
     ratings: [
         {
             reviewerId: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
