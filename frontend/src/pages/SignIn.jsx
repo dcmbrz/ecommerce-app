@@ -1,16 +1,21 @@
 import React from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { HandCoins, GraduationCap } from "lucide-react";
 import image2 from "../assets/usc-students.jpg";
 import { Input } from "@/components/ui/input";
 import { Separator } from "../components/ui/separator";
+import {GoogleLogin} from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
 function SignIn() {
+    const navigate = useNavigate();
+    async function handleSignIn() {
 
+    }
     return (
         <div className="flex items-center justify-center h-screen ">
             <div className="flex text-gray-300 font-normal justify-center w-screen">
-                <div className="w-1/2">
+                <div className="hidden lg:block lg:w-1/2">
                     <div className={"relative w-full h-screen object-cover"}>
                         <img src={image2}
                              alt="Students walking and laughing"
@@ -39,18 +44,17 @@ function SignIn() {
                         <p className={"text-gray-500 text-md"}>Let's get back in to your account</p>
                     </div>
 
-                    <div className={"flex items-center justify-center gap-8"}>
-                        <a className={"border-2 rounded-full border-gray-300 gap-2 p-3 my-5"}>
-                            <img className={"w-[24px]"}
-                                 alt={"google-logo"}
-                                 src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg"/>
-                        </a>
-                        <a className={"border-2 rounded-full border-gray-300 gap-2 p-3 my-5"}>
-                            <img className={"w-[24px]"}
-                                 alt={"apple-logo"}
-                                 src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apple/apple-original.svg"/>
-                        </a>
+                    <div className={"w-full my-5"}>
+                        <GoogleLogin
+                            onSuccess={(credentialResponse) => {
+                                console.log(jwtDecode(credentialResponse.credential))
+                                navigate("/explore")
+                            }}
+                            onError={() => console.log("Login failed")}
+                            text={"signin_with"}
+                        />
                     </div>
+
 
                     <div className={"flex items-center justify-center text-gray-500 font-medium mb-5 gap-3 w-full"}>
                         <Separator className="flex-1"/>

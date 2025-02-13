@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken";
 
 import crypto from 'crypto';
 import nodemailer from "nodemailer";
+import {errorHandler} from "../utils/error.js";
 
 // const createToken = (id) => {
 //     return jwt.sign({id}, process.env.JWT_SECRET)
@@ -65,15 +66,14 @@ const loginUser = async (req,res) =>{
     }
 }
 
-// Route for user regiser
+// Route for user register
 const registerUser = async (req,res) => {
-    const {firstname, lastname, phone, email, password} = req.body;
-    if (!firstname || !lastname || !phone || !email){
+    const {name, phone, email, password, campus} = req.body;
+    if (!name || !email || !password || !campus){
         return res.json({success:false, message: "Missing Details"})
     }
 
     try {
-
         // checking if the user already exists
         const exists = await userModel.findOne({email:email}) // if a user exists with this email then it will be stored in exists, else exists will remain undefinded
         if (exists){
@@ -84,11 +84,11 @@ const registerUser = async (req,res) => {
         
         // new user info
         const user = new userModel({
-            firstname,
-            lastname,
+            name,
             phone,
             email,
-            password:hashedPassword
+            password:hashedPassword,
+            campus,
         })
         await user.save();
 
@@ -108,7 +108,6 @@ const registerUser = async (req,res) => {
         return res.json({success:true});
 
     } catch (error){
-        console.log(error);
         res.json({success:false, message: error.message})
     }
 
