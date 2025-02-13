@@ -5,6 +5,7 @@ import image3 from "../assets/lmu-students.jpeg";
 import { Input } from "@/components/ui/input";
 import { Separator } from "../components/ui/separator";
 import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 import SchoolSelector from "@/components/SchoolSelector.jsx";
 
 function SignUp() {
@@ -56,17 +57,16 @@ function SignUp() {
         console.log(data);
     }
 
-    const handleGoogleLogin = async (e) => {
-        e.preventDefault();
-        const res = await fetch('http://localhost:4000/api/user/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        });
-        const data = await res.json();
-        console.log(data);
+
+    const handleGoogleLogin = (credentialResponse) => {
+        const credentials = jwtDecode(credentialResponse.credential)
+        const googleUser = {
+            email: credentials.email,
+            firstname: credentials.given_name,
+            lastname: credentials.family_name,
+            password:" ",
+        };
+        navigate('/sign-up/google', { state: googleUser });
     }
 
     console.log(formData);
@@ -83,9 +83,8 @@ function SignUp() {
 
                     <div className={"w-full my-5"}>
                         <GoogleLogin
-                            onSuccess={(credentialResponse) => {
-                                console.log(credentialResponse.credential)
-                                navigate("/explore")
+                            onSuccess={credentialResponse => {
+                                handleGoogleLogin(credentialResponse);
                             }}
                             onError={() => console.log("Login failed")}
                             text={"signup_with"}
@@ -105,10 +104,11 @@ function SignUp() {
                                 className={"text-red-500 font-bold"}>*</p></h1>
                             <Input
                                 placeholder={"First name"}
-                                id={"name"}
+                                id={"firstname"}
                                 type="text"
                                 className={"h-12"}
                                 onChange={handleChange}
+                                required={true}
                             />
                         </span>
                             <span className={"space-y-1"}>
@@ -116,10 +116,11 @@ function SignUp() {
                                 className={"text-red-500 font-bold"}>*</p></h1>
                             <Input
                                 placeholder={"Last name"}
-                                id={"name"}
+                                id={"lastname"}
                                 type="text"
                                 className={"h-12"}
                                 onChange={handleChange}
+                                required={true}
                             />
                         </span>
                         </div>
@@ -133,6 +134,7 @@ function SignUp() {
                                 type="email"
                                 className={"h-12"}
                                 onChange={handleChange}
+                                required={true}
                             />
                         </span>
                         <span className={"space-y-1"}>
@@ -141,10 +143,11 @@ function SignUp() {
                                 className={"text-red-500 font-bold"}>*</p></h1>
                             <Input
                                 placeholder={"Username"}
-                                id={"email"}
-                                type="email"
+                                id={"username"}
+                                type="text"
                                 className={"h-12"}
                                 onChange={handleChange}
+                                required={true}
                             />
                         </span>
                         <span className={"space-y-1"}>
@@ -157,6 +160,7 @@ function SignUp() {
                                 className={"h-12"}
                                 onClick={handlePasswordClick}
                                 onChange={handleChange}
+                                required={true}
                             />
                                 <div className={"flex flex-col items-start w-full gap-2 text-sm"}>
                                     {textVisible &&

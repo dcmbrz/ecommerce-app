@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import { HandCoins, GraduationCap } from "lucide-react";
 import image2 from "../assets/usc-students.jpg";
@@ -9,12 +9,29 @@ import { jwtDecode } from "jwt-decode";
 
 function SignIn() {
     const navigate = useNavigate();
-    async function handleSignIn() {
+    const [formData, setFormData] = useState({})
 
+    const handleChange = (e) => {
+        setFormData({...formData, [e.target.id]: e.target.value});
     }
+
+    const handleSubmit = async (e) =>{
+        e.preventDefault();
+        const res = await fetch('http://localhost:4000/api/user/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+        const data = await res.json();
+        console.log(data);
+    }
+    console.log(formData);
+
     return (
         <div className="flex items-center justify-center h-screen ">
-            <div className="flex text-gray-300 font-normal justify-center w-screen">
+            <div className="flex font-normal justify-center w-screen">
                 <div className="hidden lg:block lg:w-1/2">
                     <div className={"relative w-full h-screen object-cover"}>
                         <img src={image2}
@@ -62,13 +79,17 @@ function SignIn() {
                         <Separator className="flex-1"/>
                     </div>
 
-                    <form className={"flex flex-col gap-3 justify-between w-full"}>
+                    <form className={"flex flex-col gap-3 justify-between w-full"} onSubmit={handleSubmit}>
                         <span className={"space-y-1"}>
                             <h1 className={"text-black inline-flex gap-1"}>Email<p
                                 className={"text-red-500 font-bold"}>*</p></h1>
-                            <Input placeholder={"Email"}
-                                   type="email"
-                                   className={"h-10"}
+                            <Input
+                                placeholder={"Email"}
+                                id={"email"}
+                                type="email"
+                                className={"h-12"}
+                                onChange={handleChange}
+                                required={true}
                             />
                         </span>
 
@@ -76,15 +97,20 @@ function SignIn() {
                             <h1 className={"text-black flex gap-1"}>Password<p
                                 className={"text-red-500 font-bold"}>*</p></h1>
                             <Input type="password"
+                                   id={"password"}
                                    placeholder={"Password"}
-                                   className={"h-10"}
+                                   className={"h-12"}
+                                   onChange={handleChange}
+                                   required={true}
                             />
                         </span>
+                        <button
+                            type="submit"
+                            className={"bg-black text-white p-2 rounded-md w-full my-5 text-center hover:bg-black/90"}>Sign
+                            Up
+                        </button>
                     </form>
 
-
-                    <Link to={"/explore"} className={"bg-black text-white p-2 rounded-md w-full my-5 text-center"}>Sign
-                        In</Link>
                     <span className={"flex gap-1 text-sm"}>
                         <p className={"text-black font-medium"}>Don't have an account?</p>
                         <Link to={"/sign-up"} className={"text-blue-500 font-medium"}>Sign Up</Link>
