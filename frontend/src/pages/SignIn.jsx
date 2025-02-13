@@ -2,7 +2,8 @@ import React from "react";
 import {Link} from "react-router-dom";
 import { HandCoins, GraduationCap } from "lucide-react";
 import image2 from "../assets/usc-students.jpg";
-
+import { Input } from "@/components/ui/input";
+import { Separator } from "../components/ui/separator";
 
 function SignIn() {
 
@@ -38,33 +39,42 @@ function SignIn() {
                         <p className={"text-gray-500 text-md"}>Let's get back in to your account</p>
                     </div>
 
-                    <span
-                        className={"inline-flex border-2 rounded-full items-center justify-center border-gray-300 gap-2 p-2 w-full my-5"}>
-                        <img className={"w-[16px]"}
-                             src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg"/>
-                        <button className={"text-sm text-black font-medium"}>Login with Google</button>
-                    </span>
-
-                    <div className={"flex flex-col items-center w-full"}>
-                        <span className={"flex text-gray-500 font-medium py-3"}>
-                            <hr/>
-                            <p>Or</p>
-                            <hr/>
-                        </span>
+                    <div className={"flex items-center justify-center gap-8"}>
+                        <a className={"border-2 rounded-full border-gray-300 gap-2 p-3 my-5"}>
+                            <img className={"w-[24px]"}
+                                 alt={"google-logo"}
+                                 src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg"/>
+                        </a>
+                        <a className={"border-2 rounded-full border-gray-300 gap-2 p-3 my-5"}>
+                            <img className={"w-[24px]"}
+                                 alt={"apple-logo"}
+                                 src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/apple/apple-original.svg"/>
+                        </a>
                     </div>
+
+                    <div className={"flex items-center justify-center text-gray-500 font-medium mb-5 gap-3 w-full"}>
+                        <Separator className="flex-1"/>
+                        <p>Or</p>
+                        <Separator className="flex-1"/>
+                    </div>
+
                     <form className={"flex flex-col gap-3 justify-between w-full"}>
                         <span className={"space-y-1"}>
                             <h1 className={"text-black inline-flex gap-1"}>Email<p
                                 className={"text-red-500 font-bold"}>*</p></h1>
-                            <input placeholder={"Enter your email"} type="email"
-                                   className={"pl-3 border-2 rounded-lg items-center justify-center border-gray-300 gap-2 p-3 w-full text-gray-600"}/>
+                            <Input placeholder={"Email"}
+                                   type="email"
+                                   className={"h-10"}
+                            />
                         </span>
 
                         <span className={"space-y-1"}>
                             <h1 className={"text-black flex gap-1"}>Password<p
                                 className={"text-red-500 font-bold"}>*</p></h1>
-                            <input placeholder={"Enter your password"} type="password"
-                                   className={"pl-3 border-2 rounded-lg items-center justify-center border-gray-300 gap-2 p-3 w-full text-gray-600"}/>
+                            <Input type="password"
+                                   placeholder={"Password"}
+                                   className={"h-10"}
+                            />
                         </span>
                     </form>
 
