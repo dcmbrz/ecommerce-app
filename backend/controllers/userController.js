@@ -28,6 +28,7 @@ const transporter = nodemailer.createTransport({
 const loginUser = async (req,res) =>{
 
     const {email, password} = req.body;
+    console.log(req.body);
 
     if (!email || !password){
         return res.json({success: false, message: "Email and password are required"})
@@ -35,7 +36,7 @@ const loginUser = async (req,res) =>{
 
     try{
         const user = await userModel.findOne({email});
-
+        console.log("user", user)
         if (!user){
             return res.json({success:false, message: "User doesn't exists"})
         }
@@ -43,7 +44,8 @@ const loginUser = async (req,res) =>{
         // comparing user.password(password already in database) with password(what is being entered at the time)
         const isMatch = await bcrypt.compare(password, user.password) 
 
-        // if the passwords match 
+        // if the passwords match
+        console.log("ismatch",isMatch)
         if (isMatch){
             const token = jwt.sign({id:user._id}, process.env.JWT_SECRET, {expiresIn: '7d'})
 
@@ -68,8 +70,9 @@ const loginUser = async (req,res) =>{
 
 // Route for user register
 const registerUser = async (req,res) => {
-    const {name, phone, email, password, campus} = req.body;
-    if (!name || !email || !password || !campus){
+    const {firstname, lastname, email, username, password, campus} = req.body;
+    console.log(req.body);
+    if (!firstname || !lastname || !email || !username || !password || !campus){
         return res.json({success:false, message: "Missing Details"})
     }
 
@@ -84,8 +87,9 @@ const registerUser = async (req,res) => {
         
         // new user info
         const user = new userModel({
-            name,
-            phone,
+            firstname,
+            lastname,
+            username,
             email,
             password:hashedPassword,
             campus,

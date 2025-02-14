@@ -35,14 +35,14 @@ export function Combobox({ items, itemsName, onSelect }) {
                     variant="outline"
                     role="combobox"
                     aria-expanded={open}
-                    className="justify-between truncate">
+                    className="justify-between truncate h-12">
                     {value
                         ? items.find((item) => item.text === value)?.text
                         : `Select ${itemsName}...`}
                     <ChevronDown className="opacity-50" />
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className="p-0" align="start" side="bottom" sideOffset={4}>
+            <PopoverContent align="start" side="bottom" sideOffset={4}>
                 <Command>
                     <CommandInput
                         placeholder={`Search ${itemsName}...`}

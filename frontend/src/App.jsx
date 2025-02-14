@@ -7,6 +7,7 @@ import SignUp from "./pages/SignUp.jsx"
 import Explore from "./pages/Explore.jsx"
 import Cart from "./pages/Cart.jsx";
 import Favorites from "./pages/Favorites.jsx";
+import GoogleSignUp from "./pages/GoogleSignUp.jsx";
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
               <Route path={'/explore'} element={<Explore/>}/>
               <Route path={'/cart'} element={<Cart/>}/>
               <Route path={'/favorites'} element={<Favorites/>}/>
+              <Route path={'/sign-up/google'} element={<GoogleSignUp/>}/>
           </Routes>
       </div>
   )
