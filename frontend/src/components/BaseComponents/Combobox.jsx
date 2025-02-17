@@ -17,7 +17,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function Combobox({ items, itemsName, onSelect }) {
+export function Combobox({ items, itemsName, onSelect}) {
     const [open, setOpen] = React.useState(false);
     const [value, setValue] = React.useState("");
     const [searchTerm, setSearchTerm] = React.useState("");

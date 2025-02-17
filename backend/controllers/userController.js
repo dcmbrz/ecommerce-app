@@ -71,16 +71,22 @@ const loginUser = async (req,res) =>{
 // Route for user register
 const registerUser = async (req,res) => {
     const {firstname, lastname, email, username, password, campus} = req.body;
-    console.log(req.body);
+
     if (!firstname || !lastname || !email || !username || !password || !campus){
         return res.json({success:false, message: "Missing Details"})
     }
 
     try {
         // checking if the user already exists
-        const exists = await userModel.findOne({email:email}) // if a user exists with this email then it will be stored in exists, else exists will remain undefinded
-        if (exists){
-            return res.json({success:false, message: "User already exists"})
+        const emailExists = await userModel.findOne({ email });
+        if (emailExists) {
+            return res.json({ success: false, message: "User already exists with this email" });
+        }
+
+        // Check if username already exists
+        const usernameExists = await userModel.findOne({ username });
+        if (usernameExists) {
+            return res.json({ success: false, message: "User already exists with this username" });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10) // this gives us the hashed password
