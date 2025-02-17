@@ -298,7 +298,7 @@ function SignUp() {
                         <p className={"text-black font-medium"}>Already have an account?</p>
                         <Link to={"/sign-in"} className={"text-blue-500 font-medium"}>Log in</Link>
                     </span>
-                    {error & <p className={"text-red-700"}>{errorMessage}</p>}
+                    {error && <p className={"text-red-700"}>{errorMessage}</p>}
                 </div>
 
                 <div className="hidden lg:block lg:w-1/2">
