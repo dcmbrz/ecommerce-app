@@ -1,33 +1,108 @@
 import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import { HandCoins, GraduationCap } from "lucide-react";
-import image2 from "../assets/usc-students.jpg";
+import {HandCoins, GraduationCap, LoaderCircle} from "lucide-react";
+import image2 from "../../assets/usc-students.jpg";
 import { Input } from "@/components/ui/input";
-import { Separator } from "../components/ui/separator";
+import { Separator } from "@/components/ui/separator";
 import {GoogleLogin} from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 
 function SignIn() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({})
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [inputErrors, setInputErrors] = useState({});
 
     const handleChange = (e) => {
         setFormData({...formData, [e.target.id]: e.target.value});
+
+        setInputErrors(prevErrors => {
+            const { [e.target.id]: deletedError, ...rest } = prevErrors;  // Remove the error for the specific key
+            return rest;
+        });
     }
 
     const handleSubmit = async (e) =>{
         e.preventDefault();
-        const res = await fetch('http://localhost:4000/api/user/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-        });
-        const data = await res.json();
-        console.log(data);
+
+        const newErrors = {};
+
+        // Check required fields
+        if (!formData.email) newErrors.email = "Email is required";
+        if (!formData.password) newErrors.password = "Password is required";
+
+        // If there are errors, set the errors and return early
+        if (Object.keys(newErrors).length > 0) {
+            setInputErrors(newErrors);
+            return;
+        }
+
+        if (inputErrors.length > 0) {
+            return;
+        }
+
+        try {
+            setLoading(true);
+            setError(false);
+            const res = await fetch('http://localhost:4000/api/user/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+            const data = await res.json();
+            console.log(data)
+            setLoading(false);
+            if (data.success === false) {
+                setError(true);
+                setErrorMessage(data.message);
+                return;
+            }
+            console.log(data)
+            // Navigate to success page or next step here
+            navigate('/explore');
+        } catch (err) {
+            setLoading(false);
+            setError(true);
+        }
     }
-    console.log(formData);
+    console.log(inputErrors);
+
+    const handleGoogleLogin = async (credentialResponse) => {
+        const credentials = jwtDecode(credentialResponse.credential);
+        const googleUser = {
+            email: credentials.email,
+            password: " ",
+        };
+
+        try {
+            setLoading(true);
+            setError(false);
+            const res = await fetch('http://localhost:4000/api/user/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(googleUser),
+            });
+            const data = await res.json();
+            setLoading(false);
+            if (data.success === false) {
+                setError(true);
+                setErrorMessage(data.message);
+                return;
+            }
+            console.log(data)
+            // Navigate to success page or next step here
+            navigate('/explore')
+        } catch (err) {
+            setLoading(false);
+            setError(true);
+        }
+    };
 
     return (
         <div className="flex items-center justify-center h-screen ">
@@ -63,9 +138,8 @@ function SignIn() {
 
                     <div className={"w-full my-5"}>
                         <GoogleLogin
-                            onSuccess={(credentialResponse) => {
-                                console.log(jwtDecode(credentialResponse.credential))
-                                navigate("/explore")
+                            onSuccess={credentialResponse => {
+                                handleGoogleLogin(credentialResponse);
                             }}
                             onError={() => console.log("Login failed")}
                             text={"signin_with"}
@@ -87,10 +161,11 @@ function SignIn() {
                                 placeholder={"Email"}
                                 id={"email"}
                                 type="email"
-                                className={"h-12"}
+                                className={`h-12 ${inputErrors.email ? "border-red-500" : ""}`}
                                 onChange={handleChange}
-                                required={true}
                             />
+                            {inputErrors.email &&
+                                <p className="text-red-500 text-sm">{inputErrors.email}</p>}
                         </span>
 
                         <span className={"space-y-1"}>
@@ -99,17 +174,21 @@ function SignIn() {
                             <Input type="password"
                                    id={"password"}
                                    placeholder={"Password"}
-                                   className={"h-12"}
+                                   className={`h-12 ${inputErrors.password ? "border-red-500" : ""}`}
                                    onChange={handleChange}
-                                   required={true}
                             />
+                            {inputErrors.password &&
+                                <p className="text-red-500 text-sm">{inputErrors.password}</p>}
                         </span>
                         <button
                             type="submit"
-                            className={"bg-black text-white p-2 rounded-md w-full my-5 text-center hover:bg-black/90"}>Sign
-                            Up
+                            disabled={loading}
+                            className={"flex items-center justify-center bg-black text-white p-2 rounded-md w-full my-5 text-center hover:bg-black/90"}>
+                            {loading ? <LoaderCircle className={"animate-spin"}/> : 'Sign Up'}
                         </button>
                     </form>
+
+                    {error && <p className={"text-red-700"}>{errorMessage}</p>}
 
                     <span className={"flex gap-1 text-sm"}>
                         <p className={"text-black font-medium"}>Don't have an account?</p>

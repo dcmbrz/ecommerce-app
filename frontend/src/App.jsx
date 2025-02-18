@@ -2,12 +2,13 @@ import React from "react";
 import Navbar from "./components/Navbar.jsx";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/HomeSection/Home.jsx"
-import SignIn from "./pages/SignIn.jsx"
-import SignUp from "./pages/SignUp.jsx"
+import SignIn from "./pages/AuthPages/SignIn.jsx"
+import SignUp from "./pages/AuthPages/SignUp.jsx"
 import Explore from "./pages/Explore.jsx"
 import Cart from "./pages/Cart.jsx";
 import Favorites from "./pages/Favorites.jsx";
 import GoogleSignUp from "./pages/GoogleSignUp.jsx";
+import VerifyOtp from "@/pages/VerifyOtp.jsx";
 
 function App() {
 
@@ -22,6 +23,7 @@ function App() {
               <Route path={'/cart'} element={<Cart/>}/>
               <Route path={'/favorites'} element={<Favorites/>}/>
               <Route path={'/sign-up/google'} element={<GoogleSignUp/>}/>
+              <Route path={'/verify'} element={<VerifyOtp/>}/>
           </Routes>
       </div>
   )

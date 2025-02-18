@@ -34,11 +34,13 @@ const loginUser = async (req,res) =>{
         return res.json({success: false, message: "Email and password are required"})
     }
 
+    const normalizedEmail = email.toLowerCase();
+
     try{
-        const user = await userModel.findOne({email});
+        const user = await userModel.findOne({email: normalizedEmail});
         console.log("user", user)
         if (!user){
-            return res.json({success:false, message: "User doesn't exists"})
+            return res.json({success:false, message: "Invalid email or password"})
         }
 
         // comparing user.password(password already in database) with password(what is being entered at the time)
@@ -59,12 +61,12 @@ const loginUser = async (req,res) =>{
             return res.json({success:true});
         }
         else{
-            return res.json({success:false, message: "Invalid credentials"})
+            return res.json({success:false, message: "Invalid email or password"})
         }
 
     } catch (error){
         console.log(error);
-        res.json({success:false, message: error.message})
+        res.json({success:false, message: "Server error. Please try again later."})
     }
 }
 

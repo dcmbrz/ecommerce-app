@@ -5,7 +5,7 @@ import ProfileDropdown from "./ProfileDropdown.jsx";
 
 function Navbar() {
     const location = useLocation();
-    const hideNavbar = location.pathname === '/sign-in' || location.pathname === '/sign-up' || location.pathname === '/sign-up/google';
+    const hideNavbar = location.pathname === '/sign-in' || location.pathname === '/sign-up' || location.pathname === '/sign-up/google' || location.pathname === '/verify';
 
     if (hideNavbar) {
         return null; // Hide navbar on sign-in or sign-up pages

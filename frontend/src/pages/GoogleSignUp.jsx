@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useState} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
-import {ChevronLeft, HeartHandshake, ShieldCheck} from "lucide-react"
+import {ChevronLeft, HeartHandshake, LoaderCircle, ShieldCheck} from "lucide-react"
 import SchoolSelector from "@/components/SchoolSelector.jsx";
 import { Input } from "@/components/ui/input";
 import image3 from "@/assets/lmu-students.jpeg";
@@ -10,31 +10,81 @@ export default function GoogleSignUp(){
     const location = useLocation();
     const googleUser = location.state || {};
     const [formData, setFormData] = React.useState({})
+    const [error, setError] = useState(false);
+    const [inputErrors, setInputErrors] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
     const handleSchoolSelect = (selectedSchool) => {
         setFormData((prevData) => ({
             ...prevData,
             campus: selectedSchool ? { id: selectedSchool.value, name: selectedSchool.text } : null,
         }));
+
+        if (selectedSchool) {
+            setInputErrors((prevErrors) => {
+                const { campus, ...rest } = prevErrors;  // Remove the campus error if a valid school is selected
+                return rest;
+            });
+        }
     };
+
     const handleChange = (e) => {
         setFormData({...formData, [e.target.id]: e.target.value});
-    }
+
+        setInputErrors(prevErrors => {
+            const { [e.target.id]: deletedError, ...rest } = prevErrors;  // Remove the error for the specific key
+            return rest;
+        });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const userData = { ...googleUser, ...formData }
-        const res = await fetch('http://localhost:4000/api/user/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData),
-        });
-        const data = await res.json();
-        console.log(data);
-    }
 
-    console.log({ ...googleUser, ...formData })
+        const newErrors = {};
+
+        // Check required fields
+        if (!formData.username) newErrors.username = "Username is required";
+        if (!formData.campus) newErrors.campus = "Please select a school";
+
+        // If there are errors, set the errors and return early
+        if (Object.keys(newErrors).length > 0) {
+            setInputErrors(newErrors);
+            return;
+        }
+
+        if (inputErrors.length > 0) {
+            return;
+        }
+
+        try {
+            setLoading(true);
+            setError(false);
+            const userData = { ...googleUser, ...formData }
+            const res = await fetch('http://localhost:4000/api/user/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+            const data = await res.json();
+            console.log(data);
+            setLoading(false);
+            if (data.success === false) {
+                setError(true);
+                setErrorMessage(data.message);
+                return;
+            }
+            // Navigate to success page or next step here
+            navigate('/explore')
+        } catch (err) {
+            setLoading(false);
+            setError(true);
+        }
+    }
+    console.log(inputErrors);
+    console.log(googleUser);
 
     return (
 
@@ -56,15 +106,19 @@ export default function GoogleSignUp(){
                             id="username"
                             placeholder="Username"
                             onChange={handleChange}
-                            className={"h-14"}
+                            className={`h-14 ${inputErrors.username ? "border-red-500" : ""}`}
                         />
-                        <SchoolSelector onSelect={handleSchoolSelect}/>
+                        {inputErrors.username && <p className="text-red-500 text-sm">{inputErrors.username}</p>}
+                        <SchoolSelector onSelect={handleSchoolSelect} onChange={handleChange} id={"campus"}/>
+                        {inputErrors.campus && <p className="text-red-500 text-sm">{inputErrors.campus}</p>}
                         <button
                             type="submit"
-                            className={"bg-black text-white p-2 rounded-md w-full my-5 text-center hover:bg-black/90"}>Sign
-                            Up
+                            disabled={loading}
+                            className={"flex items-center justify-center bg-black text-white p-2 rounded-md w-full my-5 text-center hover:bg-black/90"}>
+                            {loading ? <LoaderCircle className={"animate-spin"}/> : 'Sign Up'}
                         </button>
                     </form>
+                    {error && <p className={"text-red-700"}>{errorMessage}</p>}
                 </div>
 
 

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ShieldCheck, HeartHandshake, X, Check, LoaderCircle } from "lucide-react";
-import image3 from "../assets/lmu-students.jpeg";
+import image3 from "../../assets/lmu-students.jpeg";
 import { Input } from "@/components/ui/input";
-import { Separator } from "../components/ui/separator";
+import { Separator } from "@/components/ui/separator";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import SchoolSelector from "@/components/SchoolSelector.jsx";
@@ -78,6 +78,7 @@ function SignUp() {
                 return;
             }
             // Navigate to success page or next step here
+            navigate('/explore');
         } catch (err) {
             setLoading(false);
             setError(true);
@@ -87,17 +88,12 @@ function SignUp() {
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.id]: e.target.value });
 
-        if (!e.target.value) {
-            setInputErrors(prevErrors => ({
-                ...prevErrors,
-                [e.target.id]: `${e.target.id} is required`
-            }));
-        } else {
-            setInputErrors(prevErrors => {
-                const { [e.target.id]: deletedError, ...rest } = prevErrors;  // Remove the error for the specific key
-                return rest;
-            });
-        }
+
+        setInputErrors(prevErrors => {
+            const { [e.target.id]: deletedError, ...rest } = prevErrors;  // Remove the error for the specific key
+            return rest;
+        });
+
 
         if (e.target.id === "email") {
             const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(edu)$/;
