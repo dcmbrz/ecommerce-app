@@ -162,9 +162,13 @@ const adminLogin = async (req,res) => {
 const sendVerifyOtp = async (req,res) =>{
 
     try{
-        const {userId} = req.body;
+        const {email} = req.body;
 
-        const user = await userModel.findById(userId)
+        const user = await userModel.findOne({ email })
+
+        if (!email) {
+            return res.status(400).json({ success: false, message: "Email is required" });
+        }
 
         if (user.isVerified){
             return res.json({success:false, message: "Account Already Verified"})
@@ -212,7 +216,7 @@ const sendVerifyOtp = async (req,res) =>{
 
         await transporter.sendMail(mailOptions);
 
-        return res.json({success:true, message: "Verification OTP Sent on Email"})
+        return res.json({success:true, message: "Verification code Sent to Email"})
 
     }catch(error){
         res.json({success:false, message: error.message})
@@ -221,14 +225,15 @@ const sendVerifyOtp = async (req,res) =>{
 
 //verifies the email using the otp
 const verifyEmail = async (req, res) => {
-    const {userId, otp} = req.body;
+    const {email, otp} = req.body;
+    console.log(req.body)
 
-    if(!userId || !otp){
+    if(!email || !otp){
         return res.json({success: false, message:"Missing Details"})
     }
 
     try{
-        const user = await userModel.findById(userId);
+        const user = await userModel.findOne({ email })
 
         if(!user){
             return res.json({success: false, message:"User not found"});

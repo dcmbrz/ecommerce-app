@@ -3,12 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { ShieldCheck, HeartHandshake, X, Check, LoaderCircle } from "lucide-react";
 import image3 from "../../assets/lmu-students.jpeg";
 import { Input } from "@/components/ui/input";
+import { useAppContext } from "@/context/AppContext.jsx"
 import { Separator } from "@/components/ui/separator";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import SchoolSelector from "@/components/SchoolSelector.jsx";
+import { toast } from "sonner"
 
 function SignUp() {
+    const { setUser } = useAppContext();
     const navigate = useNavigate();
     const [hasLength, setHasLength] = useState(false);
     const [hasNumber, setHasNumber] = useState(false);
@@ -72,13 +75,34 @@ function SignUp() {
             });
             const data = await res.json();
             setLoading(false);
+
             if (data.success === false) {
                 setError(true);
                 setErrorMessage(data.message);
                 return;
             }
+
+            setUser({firstname: formData.firstname, lastname: formData.lastname, email: formData.email, username: formData.username, campus: formData.campus});
+
             // Navigate to success page or next step here
-            navigate('/explore');
+            const response = await fetch('http://localhost:4000/api/user/send-verify-otp', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({email:formData.email}),
+            });
+
+            const verifyData = await response.json();
+            console.log(verifyData)
+            if (verifyData.success === false) {
+                setError(true);
+                setErrorMessage(verifyData.message);
+                toast.error(verifyData.message);
+                return;
+            }
+            toast.success(verifyData.message);
+            navigate('/verify');
         } catch (err) {
             setLoading(false);
             setError(true);

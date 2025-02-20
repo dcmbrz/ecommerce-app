@@ -180,6 +180,7 @@ function SignIn() {
                             {inputErrors.password &&
                                 <p className="text-red-500 text-sm">{inputErrors.password}</p>}
                         </span>
+                        <p onClick={()=>navigate('/reset-password')} className={"text-xs md:text-sm font-medium text-blue-500 cursor-pointer"}>Forgot Password?</p>
                         <button
                             type="submit"
                             disabled={loading}

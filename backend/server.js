@@ -15,6 +15,13 @@ const port = process.env.PORT || 4000 // this is the port number that the backen
 connectDB();
 // connectCloudinary()
 
+// Allow requests from frontend
+app.use(cors({
+    origin: "http://localhost:5176", // Allow only your frontend
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true
+}));
+
 // middlewares
 app.use(express.json());
 app.use(cookieParser());
