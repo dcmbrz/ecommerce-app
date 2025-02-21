@@ -16,7 +16,16 @@ function App() {
 
   return (
       <div className={""}>
-          <Toaster/>
+          <Toaster toastOptions={{
+                  unstyled: false,
+                  classNames: {
+                  error: 'text-red-400 bg-white border-white p-2',
+                  success: 'text-green-400 bg-white border-white p-2',
+                  warning: 'text-yellow-400 bg-white border-white p-2',
+                  info: 'text-blue-400 bg-white border-white p-2',
+              },
+          }}
+          />
         <Navbar/>
           <Routes>
               <Route path={'/'} element={<Home/>}/>

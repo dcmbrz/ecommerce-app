@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 import { useAppContext } from "@/context/AppContext.jsx"
 
 export default function VerifyOtp() {
-    const { user, setIsAuthenticated } = useAppContext();
+    const { user, login } = useAppContext();
     const navigate = useNavigate();
     const [otp, setOtp] = useState("");
     const [error, setError] = useState(false);
@@ -19,19 +19,18 @@ export default function VerifyOtp() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Entered OTP:", otp);
-
-        const userData = { email: user.email, otp };
+        console.log("user",user)
 
         try {
             setLoading(true);
             setError(false);
             const res = await fetch('http://localhost:4000/api/user/verify-account', {
                 method: 'POST',
+                credentials: "include",
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(userData),
+                body: JSON.stringify({otp}),
             });
             const data = await res.json();
 
@@ -42,7 +41,7 @@ export default function VerifyOtp() {
                 return;
             }
 
-            setIsAuthenticated(true);
+            await login();
             // Navigate to success page or next step here
             navigate('/explore');
         } catch (err) {
@@ -50,8 +49,6 @@ export default function VerifyOtp() {
             setError(true);
         }
     };
-
-    console.log(otp);
 
     return (
         <div className="flex items-center justify-center h-screen">

@@ -16,16 +16,17 @@ connectDB();
 // connectCloudinary()
 
 // Allow requests from frontend
-app.use(cors({
-    origin: "http://localhost:5176", // Allow only your frontend
-    methods: "GET,POST,PUT,DELETE",
-    credentials: true
-}));
+app.use(
+    cors({
+        origin: "http://localhost:5176", // Allow only your frontend
+        methods: "GET,POST,PUT,DELETE",
+        credentials: true, // Allows cookies & authentication headers
+    })
+);
 
-// middlewares
+// Middlewares
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({credentials: true})) // allows us to access the backend from any IP
 
 // api endpoints
 app.use("/api/user",userRouter)

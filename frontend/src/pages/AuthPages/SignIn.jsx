@@ -6,8 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import {GoogleLogin} from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+import {toast} from "sonner";
+import {useAppContext} from "@/context/AppContext.jsx";
 
 function SignIn() {
+    const { login } = useAppContext();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({})
     const [error, setError] = useState(false);
@@ -48,28 +51,39 @@ function SignIn() {
             setError(false);
             const res = await fetch('http://localhost:4000/api/user/login', {
                 method: 'POST',
+                credentials: "include",
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(formData),
             });
             const data = await res.json();
-            console.log(data)
             setLoading(false);
             if (data.success === false) {
                 setError(true);
-                setErrorMessage(data.message);
+                toast.error(data.message, {
+                    unstyled: true,
+                    classNames: {
+                        title: 'text-red-400 text-2xl font-light',
+                    },
+                });
                 return;
             }
-            console.log(data)
+
             // Navigate to success page or next step here
+            await login();
             navigate('/explore');
         } catch (err) {
             setLoading(false);
             setError(true);
+            toast.error(err.message, {
+                unstyled: true,
+                classNames: {
+                    title: 'text-red-400 text-2xl font-light',
+                },
+            });
         }
     }
-    console.log(inputErrors);
 
     const handleGoogleLogin = async (credentialResponse) => {
         const credentials = jwtDecode(credentialResponse.credential);
@@ -83,6 +97,7 @@ function SignIn() {
             setError(false);
             const res = await fetch('http://localhost:4000/api/user/login', {
                 method: 'POST',
+                credentials: "include",
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -95,8 +110,8 @@ function SignIn() {
                 setErrorMessage(data.message);
                 return;
             }
-            console.log(data)
             // Navigate to success page or next step here
+            await login();
             navigate('/explore')
         } catch (err) {
             setLoading(false);

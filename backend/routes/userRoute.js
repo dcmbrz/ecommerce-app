@@ -18,10 +18,10 @@ userRouter.post("/login", loginUser)
 userRouter.post("/logout", logoutUser)
 userRouter.post("/admin", adminLogin)
 userRouter.post("/send-verify-otp", sendVerifyOtp);
-userRouter.post("/verify-account", verifyEmail);
+userRouter.post("/verify-account", userAuth,verifyEmail);
 userRouter.post("/is-auth", userAuth, isAuthenticated);
 userRouter.post("/send-reset-otp", userAuth, sendResetOtp);
 userRouter.post("/reset-password", userAuth, resetPassword);
-userRouter.get("/data", userAuth, getUserData);
+userRouter.get("/get-data", userAuth, getUserData);
 
 export default userRouter;

@@ -28,7 +28,6 @@ const transporter = nodemailer.createTransport({
 const loginUser = async (req,res) =>{
 
     const {email, password} = req.body;
-    console.log(req.body);
 
     if (!email || !password){
         return res.json({success: false, message: "Email and password are required"})
@@ -38,7 +37,7 @@ const loginUser = async (req,res) =>{
 
     try{
         const user = await userModel.findOne({email: normalizedEmail});
-        console.log("user", user)
+
         if (!user){
             return res.json({success:false, message: "Invalid email or password"})
         }
@@ -47,7 +46,6 @@ const loginUser = async (req,res) =>{
         const isMatch = await bcrypt.compare(password, user.password) 
 
         // if the passwords match
-        console.log("ismatch",isMatch)
         if (isMatch){
             const token = jwt.sign({id:user._id}, process.env.JWT_SECRET, {expiresIn: '7d'})
 
@@ -55,7 +53,7 @@ const loginUser = async (req,res) =>{
                 {
                     httpOnly:true,
                     secure: process.env.NODE_ENV === 'production', //uses http on dev mode and https on production
-                    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+                    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
                     maxAge: 7 * 24 * 60 * 60 * 1000, //max age is 7 days in milliseconds
                 })
             return res.json({success:true});
@@ -65,7 +63,6 @@ const loginUser = async (req,res) =>{
         }
 
     } catch (error){
-        console.log(error);
         res.json({success:false, message: "Server error. Please try again later."})
     }
 }
@@ -113,7 +110,7 @@ const registerUser = async (req,res) => {
             {
                 httpOnly:true,
                 secure: process.env.NODE_ENV === 'production', //uses http on dev mode and https on production
-                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
                 maxAge: 7 * 24 * 60 * 60 * 1000, //max age is 7 days in milliseconds
             })
 
@@ -130,7 +127,7 @@ const logoutUser = async (req,res) =>{
         res.clearCookie('token', {
             httpOnly:true,
             secure: process.env.NODE_ENV === 'production', //uses http on dev mode and https on production
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         })
         return res.json({success:true, message: "Logout successful"})
     }catch(error){
@@ -141,7 +138,6 @@ const logoutUser = async (req,res) =>{
 // Route for Admin login
 const adminLogin = async (req,res) => {
     try{
-
         const {email, password} = req.body
 
         if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD){
@@ -152,7 +148,6 @@ const adminLogin = async (req,res) => {
         }
 
     }catch (error) {
-        console.log(error);
         res.json({success:false, message: error.message})
     }
 
@@ -210,7 +205,7 @@ const sendVerifyOtp = async (req,res) =>{
         const mailOptions = {
             from: process.env.SENDER_EMAIL,
             to: user.email,
-            subject: 'Welcome to SideHustle!',
+            subject: `Welcome to SideHustle! ${user.verifyOtp}`,
             html: htmlContent,
         };
 
@@ -225,19 +220,22 @@ const sendVerifyOtp = async (req,res) =>{
 
 //verifies the email using the otp
 const verifyEmail = async (req, res) => {
-    const {email, otp} = req.body;
-    console.log(req.body)
-
-    if(!email || !otp){
-        return res.json({success: false, message:"Missing Details"})
-    }
-
     try{
-        const user = await userModel.findOne({ email })
+        const {otp} = req.body;
 
-        if(!user){
-            return res.json({success: false, message:"User not found"});
+        const token = req.cookies.token;
+        if (!token) {
+            return res.status(401).json({ success: false, message: "Unauthorized: No token provided" });
         }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decoded.id;
+
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
         if (user.verifyOtp === "" || user.verifyOtp !== otp){
             return res.json({success: false, message:"Invalid OTP"});
         }
@@ -370,18 +368,33 @@ const resetPassword = async (req, res) => {
 
 const getUserData = async (req, res) => {
     try{
-        const {userId} = req.body;
-        const user = await userModel.findById(userId);
+        const token = req.cookies.token;
+        if (!token) {
+            return res.status(401).json({ success: false, message: "Unauthorized: No token provided" });
+        }
 
-        if (!user){
-            return res.json({success:false, message:"User not found"})
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const userId = decoded.id;
+
+        const user = await userModel.findById(userId);
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
         }
 
         res.json({
             success:true,
             userData: {
-                name: user.name,
+                id: user._id,
+                firstname: user.firstname,
+                lastname: user.lastname,
+                email: user.email,
+                username: user.username,
                 isVerified: user.isVerified,
+                campus: user.campus,
+                picture: user.profilePicture,
+                followers: user.followers,
+                following: user.following,
+                favorites: user.favorites,
             }
         })
 

@@ -4,11 +4,13 @@ import {ChevronLeft, HeartHandshake, LoaderCircle, ShieldCheck} from "lucide-rea
 import SchoolSelector from "@/components/SchoolSelector.jsx";
 import { Input } from "@/components/ui/input";
 import image3 from "@/assets/lmu-students.jpeg";
+import {useAppContext} from "@/context/AppContext.jsx";
 
 export default function GoogleSignUp(){
     const navigate = useNavigate();
     const location = useLocation();
     const googleUser = location.state || {};
+    const { login } = useAppContext();
     const [formData, setFormData] = React.useState({})
     const [error, setError] = useState(false);
     const [inputErrors, setInputErrors] = useState({});
@@ -69,7 +71,7 @@ export default function GoogleSignUp(){
                 body: JSON.stringify(userData),
             });
             const data = await res.json();
-            console.log(data);
+
             setLoading(false);
             if (data.success === false) {
                 setError(true);
@@ -77,14 +79,13 @@ export default function GoogleSignUp(){
                 return;
             }
             // Navigate to success page or next step here
+            await login();
             navigate('/explore')
         } catch (err) {
             setLoading(false);
             setError(true);
         }
     }
-    console.log(inputErrors);
-    console.log(googleUser);
 
     return (
 
