@@ -159,10 +159,16 @@ function SignUp() {
 
     const handleGoogleLogin = (credentialResponse) => {
         const credentials = jwtDecode(credentialResponse.credential);
+
+        if (!credentials.email.endsWith('.edu')) {
+            alert("Please use a valid .edu email address.");
+            return;
+        }
         const googleUser = {
             email: credentials.email,
             firstname: credentials.given_name,
             lastname: credentials.family_name,
+            isVerified: credentials.email_verified,
             password: " ",
         };
         navigate('/sign-up/google', { state: googleUser });

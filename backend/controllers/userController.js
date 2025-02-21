@@ -25,48 +25,6 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-const loginUser = async (req,res) =>{
-
-    const {email, password} = req.body;
-
-    if (!email || !password){
-        return res.json({success: false, message: "Email and password are required"})
-    }
-
-    const normalizedEmail = email.toLowerCase();
-
-    try{
-        const user = await userModel.findOne({email: normalizedEmail});
-
-        if (!user){
-            return res.json({success:false, message: "Invalid email or password"})
-        }
-
-        // comparing user.password(password already in database) with password(what is being entered at the time)
-        const isMatch = await bcrypt.compare(password, user.password) 
-
-        // if the passwords match
-        if (isMatch){
-            const token = jwt.sign({id:user._id}, process.env.JWT_SECRET, {expiresIn: '7d'})
-
-            res.cookie('token',token,
-                {
-                    httpOnly:true,
-                    secure: process.env.NODE_ENV === 'production', //uses http on dev mode and https on production
-                    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-                    maxAge: 7 * 24 * 60 * 60 * 1000, //max age is 7 days in milliseconds
-                })
-            return res.json({success:true});
-        }
-        else{
-            return res.json({success:false, message: "Invalid email or password"})
-        }
-
-    } catch (error){
-        res.json({success:false, message: "Server error. Please try again later."})
-    }
-}
-
 // Route for user register
 const registerUser = async (req,res) => {
     const {firstname, lastname, email, username, password, campus} = req.body;
@@ -120,6 +78,74 @@ const registerUser = async (req,res) => {
         res.json({success:false, message: error.message})
     }
 
+}
+
+const googleSignup = async (req, res) => {
+    try {
+        const { email, name, googleId } = req.body;
+
+        // Ensure the email is from an educational institution
+        if (!email.endsWith('.edu')) {
+            return res.status(400).json({ success: false, message: "Only .edu email addresses are allowed." });
+        }
+
+        // Check if user already exists
+        let user = await userModel.findOne({ email });
+        if (!user) {
+            user = new userModel({ email, name, googleId, isVerified: true });
+            await user.save();
+        }
+
+        // Generate JWT token for session
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        res.cookie('token', token, { httpOnly: true });
+
+        res.json({ success: true, message: "User registered successfully", user, token });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+const loginUser = async (req,res) =>{
+
+    const {email, password} = req.body;
+
+    if (!email || !password){
+        return res.json({success: false, message: "Email and password are required"})
+    }
+
+    const normalizedEmail = email.toLowerCase();
+
+    try{
+        const user = await userModel.findOne({email: normalizedEmail});
+
+        if (!user){
+            return res.json({success:false, message: "Invalid email or password"})
+        }
+
+        // comparing user.password(password already in database) with password(what is being entered at the time)
+        const isMatch = await bcrypt.compare(password, user.password)
+
+        // if the passwords match
+        if (isMatch){
+            const token = jwt.sign({id:user._id}, process.env.JWT_SECRET, {expiresIn: '7d'})
+
+            res.cookie('token',token,
+                {
+                    httpOnly:true,
+                    secure: process.env.NODE_ENV === 'production', //uses http on dev mode and https on production
+                    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+                    maxAge: 7 * 24 * 60 * 60 * 1000, //max age is 7 days in milliseconds
+                })
+            return res.json({success:true});
+        }
+        else{
+            return res.json({success:false, message: "Invalid email or password"})
+        }
+
+    } catch (error){
+        res.json({success:false, message: "Server error. Please try again later."})
+    }
 }
 
 const logoutUser = async (req,res) =>{
@@ -367,16 +393,20 @@ const resetPassword = async (req, res) => {
 }
 
 const getUserData = async (req, res) => {
+    console.log("req: ", req);
     try{
         const token = req.cookies.token;
+        console.log(token);
         if (!token) {
             return res.status(401).json({ success: false, message: "Unauthorized: No token provided" });
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         const userId = decoded.id;
+        console.log("userid", userId);
 
         const user = await userModel.findById(userId);
+        console.log("user", user)
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found" });
         }
@@ -406,6 +436,7 @@ const getUserData = async (req, res) => {
 export {
     loginUser,
     registerUser,
+    googleSignup,
     adminLogin,
     logoutUser,
     sendVerifyOtp,

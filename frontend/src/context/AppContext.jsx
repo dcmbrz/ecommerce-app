@@ -14,6 +14,7 @@ function useAuth() {
                 credentials: 'include'  // Ensure cookies are sent with request
             });
             const data = await res.json();
+            console.log(data.userData);
             setUser(data.userData);
             setIsAuthenticated(data.userData.isVerified);
         } catch (err) {

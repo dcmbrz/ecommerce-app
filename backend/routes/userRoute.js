@@ -2,6 +2,7 @@ import express from "express";
 import {
     loginUser,
     registerUser,
+    googleSignup,
     adminLogin,
     logoutUser,
     sendVerifyOtp,
@@ -14,6 +15,7 @@ import userAuth from "../middleware/userAuth.js";
 const userRouter = express.Router();
 
 userRouter.post("/register", registerUser)
+userRouter.post('/google-signup', googleSignup);
 userRouter.post("/login", loginUser)
 userRouter.post("/logout", logoutUser)
 userRouter.post("/admin", adminLogin)

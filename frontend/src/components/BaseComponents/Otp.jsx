@@ -19,12 +19,12 @@ export default function Otp({ onChange }) {  // Accept onChange prop
         <div className="space-y-2 text-white">
             <InputOTP maxLength={6} value={value} onChange={handleChange}>
                 <InputOTPGroup className={"text-white font-semibold gap-1"}>
-                    <InputOTPSlot index={0} className={"bg-slate-700 "}/>
-                    <InputOTPSlot index={1} className={"bg-slate-700 "}/>
-                    <InputOTPSlot index={2} className={"bg-slate-700 "}/>
-                    <InputOTPSlot index={3} className={"bg-slate-700 "}/>
-                    <InputOTPSlot index={4} className={"bg-slate-700 "}/>
-                    <InputOTPSlot index={5} className={"bg-slate-700 "}/>
+                    <InputOTPSlot index={0} className={"bg-slate-500 "}/>
+                    <InputOTPSlot index={1} className={"bg-slate-500 "}/>
+                    <InputOTPSlot index={2} className={"bg-slate-500 "}/>
+                    <InputOTPSlot index={3} className={"bg-slate-500 "}/>
+                    <InputOTPSlot index={4} className={"bg-slate-500 "}/>
+                    <InputOTPSlot index={5} className={"bg-slate-500 "}/>
                 </InputOTPGroup>
             </InputOTP>
         </div>

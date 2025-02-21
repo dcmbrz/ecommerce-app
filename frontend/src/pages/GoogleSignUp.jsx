@@ -10,7 +10,7 @@ export default function GoogleSignUp(){
     const navigate = useNavigate();
     const location = useLocation();
     const googleUser = location.state || {};
-    const { login } = useAppContext();
+    const { login, setIsAuthenticated } = useAppContext();
     const [formData, setFormData] = React.useState({})
     const [error, setError] = useState(false);
     const [inputErrors, setInputErrors] = useState({});
@@ -79,8 +79,11 @@ export default function GoogleSignUp(){
                 return;
             }
             // Navigate to success page or next step here
-            await login();
-            navigate('/explore')
+            if (data.success === true){
+                await login();
+                setIsAuthenticated(true);
+                navigate('/explore');
+            }
         } catch (err) {
             setLoading(false);
             setError(true);

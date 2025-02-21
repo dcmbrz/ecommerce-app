@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import {ObjectId} from "mongodb";
 
 const userSchema = new mongoose.Schema(
     {
@@ -18,6 +19,8 @@ const userSchema = new mongoose.Schema(
         followers: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }], default: [] },
         following: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }], default: [] },
         favorites: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }], default: [] },
+        // purchases: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: "product" }], default: [] },
+        // inbbox: { type: ObjectId, default: {} },
         // paymentMethods: {
         //     type: [
         //         {
